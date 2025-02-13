@@ -3,6 +3,9 @@
   flex-direction: column-reverse;
   padding: 0;
 }
+.window-app:has(section.window-content.inline-viewer) header {
+  border-bottom: 0px;
+}
 
 .webviewer-dialog table tr td:last-of-type {
   width: 100%;
