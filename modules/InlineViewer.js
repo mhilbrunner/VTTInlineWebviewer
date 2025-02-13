@@ -102,6 +102,7 @@ Hooks.on("getApplicationHeaderButtons", function (viewer, buttons) {
                 }).render(true);
               },
             },
+            /*
             {
               label: game.i18n.localize("inlineView.headers.export"),
               class: "export",
@@ -115,7 +116,7 @@ Hooks.on("getApplicationHeaderButtons", function (viewer, buttons) {
                   },
                 });
               },
-            },
+            },*/
           ];
         }
         return [];
