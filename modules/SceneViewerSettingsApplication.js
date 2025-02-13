@@ -8,8 +8,8 @@ let inlineViewerTemplate;
 let changedAlpha = false;
 
 Hooks.once("init", async () => {
-  settingsEntry = await getTemplate("modules/inlinewebviewer/templates/partials/sceneSettingsEntry.html");
-  inlineViewerTemplate = await getTemplate("modules/inlinewebviewer/templates/inlineViewer.html");
+  settingsEntry = await getTemplate("modules/VTTInlineWebviewer/templates/partials/sceneSettingsEntry.html");
+  inlineViewerTemplate = await getTemplate("modules/VTTInlineWebviewer/templates/inlineViewer.html");
 });
 
 export class SceneViewerSettingsApplication extends FormApplication {
@@ -17,7 +17,7 @@ export class SceneViewerSettingsApplication extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: "inline-viewer-scene-settings",
       classes: ["sheet"],
-      template: "modules/inlinewebviewer/templates/sceneSettingsPopup.html",
+      template: "templates/sceneSettingsPopup.html",
       resizable: true,
       minimizable: false,
       title: game.i18n.localize("inlineView.settings.title"),
@@ -26,7 +26,7 @@ export class SceneViewerSettingsApplication extends FormApplication {
 
   async getData(options) {
     const data = super.getData(options);
-    const settings = game.settings.get("inlinewebviewer", "sceneViewers");
+    const settings = game.settings.get("VTTInlineWebviewer", "sceneViewers");
     data.entries = Object.keys(settings || {}).map((k) => settings[k]);
     data.entries.forEach((e) => {
       e.name = game.scenes.get(e.id)?.name || "";
@@ -41,25 +41,25 @@ export class SceneViewerSettingsApplication extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // submit button
+    // Submit button
     html.find("button[type=submit]").on("click", () => {
       let valid = true;
-      let values = []; //list of different values
+      let values = []; // List of different values
       html.find("input:text[id$=ID]").each(function () {
         if (values.indexOf(this.value) >= 0) {
-          //if this value is already in the list, marks
+          // If this value is already in the list, marks
           html.find(this).css("border-color", "red");
           valid = false;
         } else {
-          html.find(this).css("border-color", ""); //clears since last check
-          values.push(this.value); //insert new value in the list
+          html.find(this).css("border-color", ""); // Clears since last check
+          values.push(this.value); // Insert new value in the list
         }
       });
       if (!valid) ui.notifications.warn(game.i18n.localize("inlineView.settings.duplicate"));
       return valid;
     });
 
-    // auto update scene name
+    // Auto update scene name
 
     html.find("input:text[id$=ID]").on("input", function () {
       jQuery(this)
@@ -68,41 +68,22 @@ export class SceneViewerSettingsApplication extends FormApplication {
         .val(game.scenes.get(this.value)?.name || "");
     });
 
-    // cancel button
+    // Cancel button
     html.find("button#cancelButton").on("click", () => {
       this.close();
     });
 
-    // add entry button logic
+    // Add entry button logic
     html.find("button#addButton").on("click", () => {
       this.addEntry(html);
     });
 
-    // new scene button
+    // New scene button
     html.find("button#createSceneButton").on("click", async () => {
       let scene = await Scene.createDialog();
       if (scene) {
         Hooks.once("renderSceneConfig", (s) => s.close({ force: true }));
         html.find("#newEntry-ID").val(scene.id);
-      }
-    });
-
-    // textarea visibility according to compat
-    html.find("input[id$=Compat]").on("click", function () {
-      if (this.checked) {
-        this.closest(".fields").style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        this.closest(".fields").style.setProperty("--compatDisplay", "none");
-      }
-    });
-
-    // textarea visibility according to compat init
-    html.find(".fields").each(function () {
-      let state = $(this).find("input[id$=Compat]")[0].checked || false;
-      if (state) {
-        this.style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        this.style.setProperty("--compatDisplay", "none");
       }
     });
 
@@ -127,8 +108,6 @@ export class SceneViewerSettingsApplication extends FormApplication {
     let id = html.find("#newEntry-ID")[0]?.value;
     /** @type {String} */
     let url = html.find("#newEntry-Url")[0]?.value;
-    /** @type {Boolean} */
-    let compat = html.find("#newEntry-Compat")[0]?.checked;
     /** @type {String} */
     let customCSS = html.find("#newEntry-CustomCSS")[0]?.value;
     /** @type {String} */
@@ -141,7 +120,6 @@ export class SceneViewerSettingsApplication extends FormApplication {
     let compiledTemplate = settingsEntry({
       id,
       url,
-      compat,
       customCSS,
       properties,
       name,
@@ -150,27 +128,12 @@ export class SceneViewerSettingsApplication extends FormApplication {
     html.find("#entryList").append(compiledTemplate);
     let addedElement = html.find(`#${id}-Entry`);
 
-    // compat checkbox
-    addedElement.find("input[id$=Compat]").on("click", function () {
-      if (this.checked) {
-        addedElement[0].style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        addedElement[0].style.setProperty("--compatDisplay", "none");
-      }
-    });
-
     addedElement.find("input:text[id$=ID]").on("input", function () {
       jQuery(this)
         .parent()
         .find("input:text[data-name]")
         .val(game.scenes.get(this.value)?.name || "");
     });
-
-    if (compat) {
-      addedElement[0].style.setProperty("--compatDisplay", "inline-block");
-    } else {
-      addedElement[0].style.setProperty("--compatDisplay", "none");
-    }
 
     // empty boxes
     html.find("#newEntry-ID")[0].value = "";
@@ -222,7 +185,7 @@ export class SceneViewerSettingsApplication extends FormApplication {
       settingsObj[id][prop] = formData[key];
     });
 
-    game.settings.set("inlinewebviewer", "sceneViewers", settingsObj);
+    game.settings.set("VTTInlineWebviewer", "sceneViewers", settingsObj);
   }
 
   _getHeaderButtons() {
@@ -243,19 +206,18 @@ export class SceneViewerSettingsApplication extends FormApplication {
 }
 
 Hooks.on("canvasInit", async (canvas) => {
-  if (Object.keys(game.settings.get("inlinewebviewer", "sceneViewers") || {}).includes(canvas?.scene?.id || "_")) {
+  if (Object.keys(game.settings.get("VTTInlineWebviewer", "sceneViewers") || {}).includes(canvas?.scene?.id || "_")) {
     if (jQuery("body > #inlineViewerBoard").length === 0) jQuery('<div id="inlineViewerBoard"></div>').insertAfter(jQuery("#board"));
-    if (game.settings.get("inlinewebviewer", "experimentalControllableScene") && jQuery("body > #inlineViewerBoardToggle").length === 0)
+    if (game.settings.get("VTTInlineWebviewer", "experimentalControllableScene") && jQuery("body > #inlineViewerBoardToggle").length === 0)
       jQuery('<input type="checkbox" id="inlineViewerBoardToggle">').insertBefore(jQuery("#board"));
-    if (game.settings.get("inlinewebviewer", "experimentalControllableScene") && jQuery("body > #inlineViewerBoardToggleContainer").length === 0)
+    if (game.settings.get("VTTInlineWebviewer", "experimentalControllableScene") && jQuery("body > #inlineViewerBoardToggleContainer").length === 0)
       jQuery(`<div id="inlineViewerBoardToggleContainer">${game.i18n.localize("Toggle scene control")}</div>`).insertBefore(jQuery("#board"));
 
-    const settings = game.settings.get("inlinewebviewer", "sceneViewers")[canvas.scene.id];
+    const settings = game.settings.get("VTTInlineWebviewer", "sceneViewers")[canvas.scene.id];
     let viewer = new InlineViewer({
       baseApplication: "InlineViewerCanvas",
       title: "",
       url: settings.url.trim(),
-      compat: settings.compat || false,
       customCSS: settings.customcss,
       properties: settings.properties,
     });
@@ -276,8 +238,8 @@ Hooks.on("canvasInit", async (canvas) => {
 });
 
 Hooks.on("canvasReady", async (canvas) => {
-  if (game.settings.get("inlinewebviewer", "experimentalControllableScene")) {
-    if (Object.keys(game.settings.get("inlinewebviewer", "sceneViewers") || {}).includes(canvas?.scene?.id || "_")) {
+  if (game.settings.get("VTTInlineWebviewer", "experimentalControllableScene")) {
+    if (Object.keys(game.settings.get("VTTInlineWebviewer", "sceneViewers") || {}).includes(canvas?.scene?.id || "_")) {
       changedAlpha = true;
       canvas.app.renderer.backgroundAlpha = 0;
       canvas.effects.illumination.background.alpha = 0;

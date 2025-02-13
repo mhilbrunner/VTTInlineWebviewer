@@ -8,7 +8,7 @@ export class UrlShareDialog extends FormApplication {
 
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      template: "modules/inlinewebviewer/templates/urlShareDialog.html",
+      template: "modules/VTTInlineWebviewer/templates/urlShareDialog.html",
       baseApplication: "UrlShareDialog",
       classes: ["webviewer-dialog"],
       minimizable: false,
@@ -18,7 +18,6 @@ export class UrlShareDialog extends FormApplication {
       popOut: true,
       shareable: false,
       url: "",
-      compat: false,
       w: 512,
       h: 512,
       name: undefined,
@@ -31,7 +30,6 @@ export class UrlShareDialog extends FormApplication {
 
     data.users = game.users.filter((user) => user.active);
     data.url = this.options.url;
-    data.compat = this.options.compat;
     data.name = this.options.name;
     data.width = this.options.w;
     data.height = this.options.h;
@@ -44,22 +42,6 @@ export class UrlShareDialog extends FormApplication {
   /** @param {JQuery} html */
   activateListeners(html) {
     super.activateListeners(html);
-
-    // textarea visibility according to compat
-    html.find("#shareCompat").on("click", function () {
-      if (this.checked) {
-        html.find(".input")[0].style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        html.find(".input")[0].style.setProperty("--compatDisplay", "none");
-      }
-    });
-
-    // textarea visibility according to compat init
-    if (html.find("#shareCompat")[0].checked || false) {
-      html.find(".input")[0].style.setProperty("--compatDisplay", "inline-block");
-    } else {
-      html.find(".input")[0].style.setProperty("--compatDisplay", "none");
-    }
 
     // close button
     html.find("button[type=button]").on("click", () => {
@@ -83,7 +65,6 @@ export class UrlShareDialog extends FormApplication {
 
     this.sendUrl(
       formData.shareUrl,
-      formData.shareCompat,
       formData.shareWidth,
       formData.shareHeight,
       formData.shareName,
@@ -95,7 +76,6 @@ export class UrlShareDialog extends FormApplication {
 
   /**
    * @param {String} url
-   * @param {Boolean} compat
    * @param {Number} w
    * @param {Number} h
    * @param {String} name
@@ -103,13 +83,12 @@ export class UrlShareDialog extends FormApplication {
    * @param {String[]} userList
    * @param {String} properties
    */
-  sendUrl(url, compat = false, w = 512, h = 512, name, customCSS, userList, properties) {
-    game.socket.emit("module.inlinewebviewer", {
+  sendUrl(url, w = 512, h = 512, name, customCSS, userList, properties) {
+    game.socket.emit("module.VTTInlineWebviewer", {
       name: name,
       url: url,
       width: w,
       height: h,
-      compat: compat,
       customcss: customCSS,
       userList: userList,
     });
@@ -122,7 +101,6 @@ export class UrlShareDialog extends FormApplication {
         minimizable: true,
         title: name.trim() == false ? game.i18n.localize("inlineView.gmShare.popup") : name.trim(),
         url: url.trim(),
-        compat: compat || false,
         customCSS: customCSS,
         properties: properties,
       }).render(true);

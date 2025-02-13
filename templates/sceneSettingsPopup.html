@@ -3,7 +3,7 @@
     <!-- prettier-ignore -->
     <div id="entryList">
       {{#each entries}}
-        {{> modules/inlinewebviewer/templates/partials/sceneSettingsEntry.html this}}
+        {{> modules/VTTInlineWebviewer/templates/partials/sceneSettingsEntry.html this}}
       {{/each}}
     </div>
 
@@ -19,9 +19,6 @@
           <input type="text" placeholder="{{localize "inlineView.html.settings.name"}}" data-name disabled />
           <input type="text" placeholder="{{localize "inlineView.html.settings.id"}}*" id="newEntry-ID" />
           <button type="button" id="createSceneButton" title="{{localize "inlineView.html.settings.sceneHint"}}">+</button>
-
-          <label class="compatLabel" for="newEntry-Compat">{{localize "inlineView.html.settings.compat"}}</label>
-          <input type="checkbox" title="{{localize "inlineView.html.settings.compatToggle"}}" id="newEntry-Compat" />
         </div>
 
         <input type="text" placeholder="{{localize "inlineView.html.settings.url"}}*" id="newEntry-Url" />

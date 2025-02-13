@@ -3,9 +3,6 @@
   <div class="input">
     <div>
       <input type="text" placeholder="{{localize "inlineView.html.settings.name"}}" id="shareName" name="shareName" required value="{{name}}" />
-
-      <label class="compatLabel" for="shareCompat">{{localize "inlineView.html.settings.compat"}}</label>
-      <input type="checkbox" id="shareCompat" name="shareCompat" title="{{localize "inlineView.html.settings.compatToggle"}}" {{checked compat}} />
     </div>
 
     <input type="text" placeholder="{{localize "inlineView.html.settings.url"}}*" id="shareUrl" name="shareUrl" required value="{{url}}" />
@@ -24,7 +21,7 @@
     {{#each users}}
     <tr>
       <td>
-        <input type="checkbox" id="share{{this.id}}" name="shareCheckbox{{this.id}}" data-userid="{{this.id}}" data-dtype="Checkbox" {{checked "compat"}} />
+        <input type="checkbox" id="share{{this.id}}" name="shareCheckbox{{this.id}}" data-userid="{{this.id}}" data-dtype="Checkbox" />
       </td>
       <td>
         <label for="share{{this.id}}">{{this.name}}</label>

@@ -162,7 +162,7 @@
 #inline-viewer-settings textarea[id$="CustomCSS"],
 .webviewer-dialog textarea#shareCustomCSS {
   width: calc(100% - 2px);
-  display: var(--compatDisplay);
+  display: inline-block;
 }
 
 #inline-viewer-scene-settings .settingsContainer > div,
@@ -203,12 +203,6 @@
 #inline-viewer-scene-settings .settingsContainer .settingsEntry:not(:last-child),
 #inline-viewer-settings .settingsContainer .settingsEntry:not(:last-child) {
   margin-bottom: 2px;
-}
-
-#inline-viewer-scene-settings .settingsContainer .compatLabel,
-#inline-viewer-settings .settingsContainer .compatLabel,
-.webviewer-dialog .input .compatLabel {
-  line-height: 24px;
 }
 
 #inline-viewer-scene-settings .settingsContainer .buttons,

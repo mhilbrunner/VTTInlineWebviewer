@@ -3,7 +3,7 @@
     <!-- prettier-ignore -->
     <div id="entryList">
       {{#each entries}}
-        {{> modules/inlinewebviewer/templates/partials/settingsEntry.html this}}
+        {{> modules/VTTInlineWebviewer/templates/partials/settingsEntry.html this}}
       {{/each}}
     </div>
 
@@ -17,9 +17,6 @@
       <div class="fields">
         <div>
           <input type="text" placeholder="{{localize "inlineView.html.settings.name"}}*" id="newEntry-Name" />
-
-          <label class="compatLabel" for="newEntry-Compat">{{localize "inlineView.html.settings.compat"}}</label>
-          <input type="checkbox" title="{{localize "inlineView.html.settings.compatToggle"}}" id="newEntry-Compat" />
         </div>
 
         <input type="text" placeholder="{{localize "inlineView.html.settings.url"}}*" id="newEntry-Url" />

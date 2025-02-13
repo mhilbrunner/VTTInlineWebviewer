@@ -1,6 +1,6 @@
 {
-    "name": "inlinewebviewer",
-    "title": "Inline Webviewer (Fork)",
+    "name": "VTTInlineWebviewer",
+    "title": "VTT Inline Webviewer (Fork)",
     "description": "Open websites inside Foundry, eg. an easyzoom map. (Fork by mhilbrunner, original module by ardittristan#0001)",
     "author": "ardittristan#0001",
     "authors": [
@@ -36,11 +36,6 @@
             "lang": "en",
             "name": "English",
             "path": "lang/en.json"
-        },
-        {
-            "lang": "ja",
-            "name": "日本語",
-            "path": "lang/ja.json"
         }
     ],
     "packs": [],

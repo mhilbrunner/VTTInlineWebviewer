@@ -10,23 +10,16 @@
       "settingsError": "Something is wrong with the webview settings. Check your formatting."
     },
     "html": {
-      "compatBox": "compatibility mode?",
-      "compatDisclaimer": "Compatibility mode logs domain names to prevent proxy abuse.",
-      "extensionDisclaimer": "If compatibility mode doesn't work, try the <a target=\"_blank\" href=\"https://github.com/ardittristan/FoundryVTT-Inline-Webviewer-Extension\">extension</a>",
-      "loginDisclaimer": "Logging in won't work sometimes, first try logging in while devtools (F12) is open, otherwise create an issue on the <a target=\"_blank\" href=\"https://github.com/ardittristan/FoundryVTT-Inline-Webviewer-Extension\">extension github</a>",
       "settings": {
-        "compat": "Compat",
         "save": "Save",
         "cancel": "Cancel",
-        "compatToggle": "Toggle Compatibility mode",
         "name": "Name",
         "url": "Url",
         "icon": "Icon",
         "width": "Width",
         "height": "Height",
-        "removedElements": "Removed Elements",
         "properties": "Iframe HTML Properties",
-        "id": "Scene id",
+        "id": "Scene ID",
         "sceneHint": "Create new scene"
       }
     },
@@ -77,13 +70,6 @@
         "iconDescC": "which translates to",
         "dimensions": "Width and Height",
         "dimensionsDesc": "The width and height fields set the width and the height of the webviewer window when it appears.",
-        "compat": "Compat",
-        "compatDesc": "The compat checkbox activates compatibility mode, in this mode the webviewer uses a proxy. This can be used when the site does not function well normally.",
-        "compatWarn": "Do keep in mind that the proxy logs the urls visited to prevent abuse!",
-        "removed": "Removed Elements",
-        "removedDescA": "This textbox only appears if compat mode is on. Any css selector (eg",
-        "removedDescB": "you put in here will be hidden in the webviewer. This is because some things won't dissapear when compatibility mode is on because cookies don't work well with it.",
-        "removeSeparator": "Selectors are seperated by commas!",
         "properties": "HTML Properties",
         "propertiesDesc": "These properties are HTML tags that will be added to the iframe element, eg:"
       }
@@ -94,9 +80,6 @@
     "settings": {
       "title": "Webviewer Settings",
       "duplicate": "Please do not use the same name twice."
-    },
-    "extension": {
-      "newVersion": "There is a new extension version available"
     }
   }
 }

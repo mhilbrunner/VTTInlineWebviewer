@@ -3,7 +3,7 @@ import { PrivateInlineSettingsApplication } from "./modules/PrivateInlineSetting
 import { SceneViewerSettingsApplication } from "./modules/SceneViewerSettingsApplication.js";
 
 Hooks.once("init", () => {
-  game.settings.register("inlinewebviewer", "webviewers", {
+  game.settings.register("VTTInlineWebviewer", "webviewers", {
     scope: "world",
     config: false,
     type: String,
@@ -11,14 +11,14 @@ Hooks.once("init", () => {
     default: "",
   });
 
-  game.settings.register("inlinewebviewer", "privateWebviewers", {
+  game.settings.register("VTTInlineWebviewer", "privateWebviewers", {
     scope: "client",
     config: false,
     type: String,
     default: "",
   });
 
-  game.settings.register("inlinewebviewer", "webviewersNew", {
+  game.settings.register("VTTInlineWebviewer", "webviewersNew", {
     scope: "world",
     config: false,
     type: Array,
@@ -26,14 +26,14 @@ Hooks.once("init", () => {
     default: [],
   });
 
-  game.settings.register("inlinewebviewer", "privateWebviewersNew", {
+  game.settings.register("VTTInlineWebviewer", "privateWebviewersNew", {
     scope: "client",
     config: false,
     type: Array,
     default: [],
   });
 
-  game.settings.register("inlinewebviewer", "confirmExit", {
+  game.settings.register("VTTInlineWebviewer", "confirmExit", {
     name: "inlineView.confirmExit.name",
     hint: "inlineView.confirmExit.hint",
     scope: "client",
@@ -43,28 +43,28 @@ Hooks.once("init", () => {
     default: true,
   });
 
-  game.settings.register("inlinewebviewer", "localMigrate", {
+  game.settings.register("VTTInlineWebviewer", "localMigrate", {
     scope: "client",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("inlinewebviewer", "worldMigrate", {
+  game.settings.register("VTTInlineWebviewer", "worldMigrate", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("inlinewebviewer", "sceneViewers", {
+  game.settings.register("VTTInlineWebviewer", "sceneViewers", {
     scope: "world",
     config: false,
     type: Object,
     default: {},
   });
 
-  game.settings.register("inlinewebviewer", "experimentalControllableScene", {
+  game.settings.register("VTTInlineWebviewer", "experimentalControllableScene", {
     scope: "world",
     config: true,
     type: Boolean,
@@ -73,21 +73,21 @@ Hooks.once("init", () => {
     hint: "If you don't want to see the grid set it's opacity to 0, background also best at color #000000",
   });
 
-  game.settings.registerMenu("inlinewebviewer", "sceneSettings", {
+  game.settings.registerMenu("VTTInlineWebviewer", "sceneSettings", {
     name: "inlineView.menus.scene",
     label: "inlineView.menus.label",
     type: SceneViewerSettingsApplication,
     restricted: true,
   });
 
-  game.settings.registerMenu("inlinewebviewer", "worldSettings", {
+  game.settings.registerMenu("VTTInlineWebviewer", "worldSettings", {
     name: "inlineView.menus.global",
     label: "inlineView.menus.label",
     type: InlineSettingsApplication,
     restricted: true,
   });
 
-  game.settings.registerMenu("inlinewebviewer", "privateSettings", {
+  game.settings.registerMenu("VTTInlineWebviewer", "privateSettings", {
     name: "inlineView.menus.private",
     label: "inlineView.menus.label",
     type: PrivateInlineSettingsApplication,
@@ -97,7 +97,7 @@ Hooks.once("init", () => {
   //
 
   if (typeof window?.Ardittristan?.ColorSetting === "function") {
-    new window.Ardittristan.ColorSetting("inlinewebviewer", "webviewColor", {
+    new window.Ardittristan.ColorSetting("VTTInlineWebviewer", "webviewColor", {
       name: "inlineView.webviewColor.name",
       hint: "inlineView.webviewColor.hint",
       label: "inlineView.webviewColor.label",
@@ -106,7 +106,7 @@ Hooks.once("init", () => {
       scope: "client",
     });
   } else {
-    game.settings.register("inlinewebviewer", "webviewColor", {
+    game.settings.register("VTTInlineWebviewer", "webviewColor", {
       name: "inlineView.webviewColor.name",
       hint: "inlineView.webviewColor.hint",
       restricted: false,
@@ -116,49 +116,4 @@ Hooks.once("init", () => {
       config: true,
     });
   }
-
-  // if old version update values
-  if (!game.settings.get("inlinewebviewer", "localMigrate")) {
-    migrateSettings("privateWebviewers");
-    game.settings.set("inlinewebviewer", "localMigrate", true);
-  }
-  Hooks.once("ready", () => {
-    if (game.user.isGM && !game.settings.get("inlinewebviewer", "worldMigrate")) {
-      migrateSettings("webviewersNew");
-      game.settings.set("inlinewebviewer", "worldMigrate", true);
-    }
-  });
 });
-
-/**
- * @param {String} settingId
- */
-function migrateSettings(settingId) {
-  let out = [];
-  const settingsString = game.settings.get("inlinewebviewer", settingId);
-
-  if (typeof settingsString !== "string") return;
-
-  let settingsArray = settingsString.match(/\[.*?\]/g) || [];
-
-  let i = 0;
-  for (let settings of settingsArray) {
-    i++;
-    settings = settings.replace(/\<|\>/g, "");
-
-    // get args for the setting
-    const settingsVars = settings.split(",");
-
-    const settingsObject = {
-      id: i,
-      url: settingsVars?.[0],
-      name: settingsVars?.[1],
-      icon: settingsVars?.[2],
-      compat: settingsVars?.[3],
-    };
-
-    out.push(settingsObject);
-  }
-
-  game.settings.set("inlinewebviewer", settingId + "New", out);
-}

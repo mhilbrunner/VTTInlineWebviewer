@@ -4,7 +4,7 @@ export class HelpPopup extends Application {
 
     mergeObject(options, {
       id: "inline-webviewer-help",
-      template: "modules/inlinewebviewer/templates/helpPopup.html",
+      template: "modules/VTTInlineWebviewer/templates/helpPopup.html",
       baseApplication: "inlineviewerHelp",
       classes: ["sheet"],
       title: game.i18n.localize("inlineView.help.title"),

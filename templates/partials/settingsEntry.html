@@ -12,9 +12,6 @@
   <div class="fields">
     <div>
       <input type="text" placeholder="{{localize "inlineView.html.settings.name"}}*" id="{{this.safeName}}{{this.safename}}-Name" name="{{this.name}}-Name" required value="{{this.name}}" />
-
-      <label class="compatLabel" for="{{this.safeName}}{{this.safename}}-Compat">{{localize "inlineView.html.settings.compat"}}</label>
-      <input type="checkbox" id="{{this.safeName}}{{this.safename}}-Compat" name="{{this.name}}-Compat" title="{{localize "inlineView.html.settings.compatToggle"}}" {{checked this.compat}} />
     </div>
 
     <input type="text" placeholder="{{localize "inlineView.html.settings.url"}}*" id="{{this.safeName}}{{this.safename}}-Url" name="{{this.name}}-Url" required value="{{this.url}}" />

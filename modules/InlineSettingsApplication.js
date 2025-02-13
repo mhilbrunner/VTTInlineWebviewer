@@ -5,7 +5,7 @@ import { HelpPopup } from "./HelpPopup.js";
 let settingsEntry;
 
 Hooks.once("init", async () => {
-  settingsEntry = await getTemplate("modules/inlinewebviewer/templates/partials/settingsEntry.html");
+  settingsEntry = await getTemplate("modules/VTTInlineWebviewer/templates/partials/settingsEntry.html");
 });
 
 export class InlineSettingsApplication extends FormApplication {
@@ -22,7 +22,7 @@ export class InlineSettingsApplication extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: "inline-viewer-settings",
       classes: ["sheet"],
-      template: "modules/inlinewebviewer/templates/settingsPopup.html",
+      template: "modules/VTTInlineWebviewer/templates/settingsPopup.html",
       resizable: true,
       minimizable: false,
       title: game.i18n.localize("inlineView.settings.title"),
@@ -31,7 +31,7 @@ export class InlineSettingsApplication extends FormApplication {
 
   async getData(options) {
     const data = super.getData(options);
-    data.entries = game.settings.get("inlinewebviewer", this.settingIdentifier) || [];
+    data.entries = game.settings.get("VTTInlineWebviewer", this.settingIdentifier) || [];
 
     return data;
   }
@@ -43,51 +43,32 @@ export class InlineSettingsApplication extends FormApplication {
     super.activateListeners(html);
     const _this = this;
 
-    // submit button
+    // Submit button
     html.find("button[type=submit]").on("click", () => {
       let valid = true;
-      let values = []; //list of different values
+      let values = []; // List of different values
       html.find("input:text[id$=Name]").each(function () {
         if (values.indexOf(this.value) >= 0) {
-          //if this value is already in the list, marks
+          // If this value is already in the list, marks
           html.find(this).css("border-color", "red");
           valid = false;
         } else {
-          html.find(this).css("border-color", ""); //clears since last check
-          values.push(this.value); //insert new value in the list
+          html.find(this).css("border-color", ""); // Clears since last check
+          values.push(this.value); // Insert new value in the list
         }
       });
       if (!valid) ui.notifications.warn(game.i18n.localize("inlineView.settings.duplicate"));
       return valid;
     });
 
-    // cancel button
+    // Cancel button
     html.find("button#cancelButton").on("click", () => {
       this.close();
     });
 
-    // add entry button logic
+    // Add entry button logic
     html.find("button#addButton").on("click", () => {
       this.addEntry(html);
-    });
-
-    // textarea visibility according to compat
-    html.find("input[id$=Compat]").on("click", function () {
-      if (this.checked) {
-        this.closest(".fields").style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        this.closest(".fields").style.setProperty("--compatDisplay", "none");
-      }
-    });
-
-    // textarea visibility according to compat init
-    html.find(".fields").each(function () {
-      let state = $(this).find("input[id$=Compat]")[0].checked || false;
-      if (state) {
-        this.style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        this.style.setProperty("--compatDisplay", "none");
-      }
     });
 
     html.find("button.upButton").on("click", function () {
@@ -170,8 +151,6 @@ export class InlineSettingsApplication extends FormApplication {
     let safeName = name.replace(safeRegex, "");
     /** @type {String} */
     let url = html.find("#newEntry-Url")[0]?.value;
-    /** @type {Boolean} */
-    let compat = html.find("#newEntry-Compat")[0]?.checked;
     /** @type {String} */
     let icon = html.find("#newEntry-Icon")[0]?.value;
     /** @type {Number} */
@@ -200,7 +179,6 @@ export class InlineSettingsApplication extends FormApplication {
       name,
       safeName,
       url,
-      compat,
       icon,
       width,
       height,
@@ -211,21 +189,6 @@ export class InlineSettingsApplication extends FormApplication {
 
     html.find("#entryList").append(compiledTemplate);
     let addedElement = html.find(`#${safeName}-Entry`);
-
-    // compat checkbox
-    addedElement.find("input[id$=Compat]").on("click", function () {
-      if (this.checked) {
-        addedElement[0].style.setProperty("--compatDisplay", "inline-block");
-      } else {
-        addedElement[0].style.setProperty("--compatDisplay", "none");
-      }
-    });
-
-    if (compat) {
-      addedElement[0].style.setProperty("--compatDisplay", "inline-block");
-    } else {
-      addedElement[0].style.setProperty("--compatDisplay", "none");
-    }
 
     // empty boxes
     html.find("#newEntry-Name")[0].value = "";
@@ -290,7 +253,7 @@ export class InlineSettingsApplication extends FormApplication {
 
     settingsArray.shift();
 
-    game.settings.set("inlinewebviewer", this.settingIdentifier, settingsArray);
+    game.settings.set("VTTInlineWebviewer", this.settingIdentifier, settingsArray);
   }
 
   _getHeaderButtons() {
