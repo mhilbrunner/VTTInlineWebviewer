@@ -79,7 +79,11 @@
     },
     "settings": {
       "title": "Webviewer Settings",
-      "duplicate": "Please do not use the same name twice."
+      "duplicate": "Please do not use the same name twice.",
+      "settingButtonTitle": {
+        "name": "Button title",
+        "hint": "Title of the webview button in the scene controls sidebar"
+      }
     }
   }
 }

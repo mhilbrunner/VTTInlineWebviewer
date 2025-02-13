@@ -164,10 +164,9 @@ Hooks.on("getSceneControlButtons", (controls) => {
     }
   }
 
-  // create button list
   controls.push({
     name: "webviews",
-    title: "inlineView.button",
+    title: game.settings.get("VTTInlineWebviewer", "buttonTitle"),
     layer: "controls",
     icon: "far fa-window-maximize",
     tools: tools,

@@ -40,20 +40,6 @@ Hooks.once("init", () => {
     restricted: false,
     config: true,
     type: Boolean,
-    default: true,
-  });
-
-  game.settings.register("VTTInlineWebviewer", "localMigrate", {
-    scope: "client",
-    config: false,
-    type: Boolean,
-    default: false,
-  });
-
-  game.settings.register("VTTInlineWebviewer", "worldMigrate", {
-    scope: "world",
-    config: false,
-    type: Boolean,
     default: false,
   });
 
@@ -94,7 +80,15 @@ Hooks.once("init", () => {
     restricted: false,
   });
 
-  //
+  game.settings.register("VTTInlineWebviewer", "buttonTitle", {
+    name: "inlineView.settings.settingButtonTitle.name",
+    hint: "inlineView.settings.settingButtonTitle.hint",
+    restricted: false,
+    default: game.i18n.localize("inlineView.button"),
+    type: String,
+    scope: "world",
+    config: true,
+  });
 
   game.settings.register("VTTInlineWebviewer", "webviewColor", {
     name: "inlineView.webviewColor.name",
