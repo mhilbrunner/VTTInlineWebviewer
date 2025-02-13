@@ -1,54 +1,48 @@
-name: inelineviewer CI
-on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '**.md'
-      - '**.yml'
-      - '.github/**'
+name: Release Creation
+
+on: 
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Get Version                                   # Run the script that returns the version from `module.json`
-      shell: bash
-      id: get-version
-      run: echo "::set-output name=version::$(node ./.github/workflows/get-version.js)"
+
+    # get part of the tag after the `v`
+    - name: Extract tag version number
+      id: get_version
+      uses: battila7/get-version-action@v2
+
+    # Substitute the Manifest and Download URLs in the module.json
     - name: Substitute Manifest and Download Links For Versioned Ones
+      id: sub_manifest_link_version
       uses: microsoft/variable-substitution@v1
       with:
         files: 'module.json'
       env:
-        download: https://github.com/${{github.repository}}/releases/download/${{steps.get-version.outputs.version}}/inline-viewer.zip
-    - run: zip -r ./inline-viewer.zip module.json inlineviewer.js settings.js css/ lang/ templates/ lib/ docs/ data/ modules/                                      # Add folders/files here
-    - name: Create Release                                # Create an additional release for this version
-      id: create_versioned_release
+        version: ${{steps.get_version.outputs.version-without-v}}
+        url: https://github.com/${{github.repository}}
+        manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
+        download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
+
+    # Create a zip file with all files required by the module to add to the release
+    - run: zip -r ./module.zip module.json README.md LICENSE main.js css/ templates/ lang/ img/
+
+    # Create a release for this specific version
+    - name: Update Release with Files
+      id: create_version_release
       uses: ncipollo/release-action@v1
       with:
-        allowUpdates: false # set to false if you do not want to allow updates on existing releases
-        name: Release ${{ steps.get-version.outputs.version }} # Use the version in the name
-        draft: false
-        prerelease: false
+        allowUpdates: true # Set this to false if you want to prevent updating existing releases
+        name: ${{ github.event.release.name }}
+        draft: ${{ github.event.release.unpublished }}
+        prerelease: ${{ github.event.release.prerelease }}
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.json,./inline-viewer.zip'                                                                 # don't forget to rename module zip thing
-        tag: ${{ steps.get-version.outputs.version }} # Use the version as the tag
-    - name: Create Release
-      id: create_latest_release
-      uses: ncipollo/release-action@v1
-      if: endsWith(github.ref, 'master') # Only update the latest release when pushing to the master branch
-      with:
-        allowUpdates: true
-        name: Latest
-        draft: false
-        prerelease: false
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.json,./inline-viewer.zip'                                                                 # don't forget to rename module zip thing
-        tag: latest
-    - name: Invoke push script
-      uses: benc-uk/workflow-dispatch@v1
-      with:
-        workflow: Push To Deploy
-        token: ${{ secrets.PERSONAL_TOKEN }}
+        artifacts: './module.json, ./module.zip'
+        tag: ${{ github.event.release.tag_name }}
+        body: ${{ github.event.release.body }}
