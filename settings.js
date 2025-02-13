@@ -96,24 +96,13 @@ Hooks.once("init", () => {
 
   //
 
-  if (typeof window?.Ardittristan?.ColorSetting === "function") {
-    new window.Ardittristan.ColorSetting("VTTInlineWebviewer", "webviewColor", {
-      name: "inlineView.webviewColor.name",
-      hint: "inlineView.webviewColor.hint",
-      label: "inlineView.webviewColor.label",
-      restricted: false,
-      defaultColor: "#383838a1",
-      scope: "client",
-    });
-  } else {
-    game.settings.register("VTTInlineWebviewer", "webviewColor", {
-      name: "inlineView.webviewColor.name",
-      hint: "inlineView.webviewColor.hint",
-      restricted: false,
-      default: "#383838a1",
-      type: String,
-      scope: "client",
-      config: true,
-    });
-  }
+  game.settings.register("VTTInlineWebviewer", "webviewColor", {
+    name: "inlineView.webviewColor.name",
+    hint: "inlineView.webviewColor.hint",
+    restricted: false,
+    default: "#383838a1",
+    type: String,
+    scope: "client",
+    config: true,
+  });
 });

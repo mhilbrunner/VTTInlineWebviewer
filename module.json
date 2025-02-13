@@ -22,9 +22,6 @@
         "minimum": "9",
         "verified": "12"
     },
-    "scripts": [
-        "./lib/colorSettingStub.js"
-    ],
     "esmodules": [
         "inlineviewer.js"
     ],
