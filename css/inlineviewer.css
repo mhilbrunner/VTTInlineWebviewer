@@ -1,6 +1,7 @@
 .window-app section.window-content.inline-viewer {
   background-blend-mode: multiply;
   flex-direction: column-reverse;
+  padding: 0;
 }
 
 .webviewer-dialog table tr td:last-of-type {
