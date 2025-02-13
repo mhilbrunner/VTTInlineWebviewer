@@ -14,7 +14,7 @@
     "url": "https://github.com/mhilbrunner/VTTInlineWebviewer",
     "flags": {},
     "version": "4.0.0",
-    "download": "https://github.com/ardittristan/VTTInlineWebviewer/releases/download/4.0.0/inline-viewer.zip",
+    "download": "https://github.com/mhilbrunner/VTTInlineWebviewer/releases/download/4.0.0/module.zip",
     "manifest": "https://raw.githubusercontent.com/mhilbrunner/VTTInlineWebviewer/master/module.json",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "12",
