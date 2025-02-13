@@ -17,7 +17,7 @@ export class SceneViewerSettingsApplication extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: "inline-viewer-scene-settings",
       classes: ["sheet"],
-      template: "templates/sceneSettingsPopup.html",
+      template: "modules/VTTInlineWebViewer/templates/sceneSettingsPopup.html",
       resizable: true,
       minimizable: false,
       title: game.i18n.localize("inlineView.settings.title"),
