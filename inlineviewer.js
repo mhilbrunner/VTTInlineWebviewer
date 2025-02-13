@@ -186,4 +186,3 @@ localStorage.setItem("isFoundry", "true");
 window.Ardittristan = window.Ardittristan || {};
 window.Ardittristan.InlineViewer = window.Ardittristan.InlineViewer || {};
 window.Ardittristan.InlineViewer.sendUrl = UrlShareDialog.prototype.sendUrl;
-window.Ardittristan.InlineViewer.youtubeUrls = [];
